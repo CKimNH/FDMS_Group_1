@@ -1,8 +1,0 @@
-C:\Users\tutek\OneDrive\Documents\AircraftTransmissionSystem\TemporaryServer\bin\Debug\TemporaryServer.exe.config
-C:\Users\tutek\OneDrive\Documents\AircraftTransmissionSystem\TemporaryServer\bin\Debug\TemporaryServer.exe
-C:\Users\tutek\OneDrive\Documents\AircraftTransmissionSystem\TemporaryServer\bin\Debug\TemporaryServer.pdb
-C:\Users\tutek\OneDrive\Documents\AircraftTransmissionSystem\TemporaryServer\obj\Debug\TemporaryServer.csproj.AssemblyReference.cache
-C:\Users\tutek\OneDrive\Documents\AircraftTransmissionSystem\TemporaryServer\obj\Debug\TemporaryServer.csproj.SuggestedBindingRedirects.cache
-C:\Users\tutek\OneDrive\Documents\AircraftTransmissionSystem\TemporaryServer\obj\Debug\TemporaryServer.csproj.CoreCompileInputs.cache
-C:\Users\tutek\OneDrive\Documents\AircraftTransmissionSystem\TemporaryServer\obj\Debug\TemporaryServer.exe
-C:\Users\tutek\OneDrive\Documents\AircraftTransmissionSystem\TemporaryServer\obj\Debug\TemporaryServer.pdb

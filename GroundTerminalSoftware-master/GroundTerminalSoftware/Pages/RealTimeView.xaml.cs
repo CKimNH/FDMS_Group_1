@@ -39,8 +39,17 @@ namespace GroundTerminalSoftware.Pages
         {
             InitializeComponent();
 
-            viewModel = new RealTimeViewModel();
+            viewModel = RealTimeViewModel.Instance;
             this.DataContext = viewModel;
+
+            if (!viewModel.IsActive)
+            {
+                InitializeConnectionAndTasks();
+            }
+        }
+
+        private void InitializeConnectionAndTasks()
+        {
             connection = new SqlConnection("Data Source=CNHKIM\\SQLEXPRESS;Initial Catalog=FlightData;Integrated Security=True");
             connection.Open();
 
