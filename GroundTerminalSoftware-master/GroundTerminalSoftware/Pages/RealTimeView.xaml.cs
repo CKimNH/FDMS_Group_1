@@ -18,6 +18,8 @@ using System.Net;
 using System.Net.Sockets;
 using System.Windows.Media.Media3D;
 using System.Reflection.Emit;
+using GroundTerminalSoftware.Models;
+using GroundTerminalSoftware.ViewModels;
 
 namespace GroundTerminalSoftware.Pages
 {
@@ -31,11 +33,14 @@ namespace GroundTerminalSoftware.Pages
         IPAddress iPAddress;
         IPEndPoint localEndPoint;
         public Socket handler;
+        private RealTimeViewModel viewModel;
 
         public RealTimeView()
         {
             InitializeComponent();
 
+            viewModel = new RealTimeViewModel();
+            this.DataContext = viewModel;
             connection = new SqlConnection("Data Source=CNHKIM\\SQLEXPRESS;Initial Catalog=FlightData;Integrated Security=True");
             connection.Open();
 
@@ -43,7 +48,7 @@ namespace GroundTerminalSoftware.Pages
             {
                 Task.Run(() => Start_listener());
                 Task.Run(() => Update_Database());
-                Task.Run(() => Update_Label_Content());
+                //Task.Run(() => Update_Label_Content());
 
                 MainWindow.instance.run_once = true;
             }
@@ -54,7 +59,7 @@ namespace GroundTerminalSoftware.Pages
                 //assure thread stops
                 Thread.Sleep(10);
                 MainWindow.instance.pause_real_time_output = false;
-                Task.Run(() => Update_Label_Content());
+                //Task.Run(() => Update_Label_Content());
             }
         }
 
@@ -155,6 +160,29 @@ namespace GroundTerminalSoftware.Pages
                             bank = B;
                         }
 
+                        FlightDataEntry flightDataEntry = new FlightDataEntry
+                        {
+                            TailNum = tailNumber,
+                            Timestamp = timeStamp,
+                            X = x,
+                            Y = y,
+                            Z = z,
+                            Weight = weight,
+                            Altitude = altitude,
+                            Pitch = pitch,
+                            Bank = bank,
+                        };
+
+                        Dispatcher.Invoke(() =>
+                        {
+                            viewModel.FlightDataEntries.Insert(0, flightDataEntry);
+
+                            if (viewModel.FlightDataEntries.Count > 5 )
+                            {
+                                viewModel.FlightDataEntries.RemoveAt(viewModel.FlightDataEntries.Count - 1);
+                            }
+                        });
+
                         // put information into database
                         SqlCommand updateGForceParameters = new SqlCommand("insert into GForceParameters (TailNumber,Timestamp,X,Y,Z,Weight) values" +
                             "(@TailNumber,@Timestamp,@X,@Y,@Z,@Weight)", connection);
@@ -189,7 +217,7 @@ namespace GroundTerminalSoftware.Pages
             }
         }
 
-        public void Update_Label_Content()
+/*        public void Update_Label_Content()
         {
             while (!MainWindow.instance.pause_real_time_output) 
             {
@@ -200,7 +228,7 @@ namespace GroundTerminalSoftware.Pages
                 Thread.Sleep(10);
             }
         }
-
+*/
         public void Erase_Database()
         {
             SqlCommand deleteGForceTable = new SqlCommand("DELETE FROM GForceParameters", connection);

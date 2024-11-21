@@ -1,0 +1,8 @@
+C:\Users\tutek\Documents\FDMS\AircraftTransmissionSystem\AircraftTransmissionSystem\bin\Debug\AircraftTransmissionSystem.exe.config
+C:\Users\tutek\Documents\FDMS\AircraftTransmissionSystem\AircraftTransmissionSystem\bin\Debug\AircraftTransmissionSystem.exe
+C:\Users\tutek\Documents\FDMS\AircraftTransmissionSystem\AircraftTransmissionSystem\bin\Debug\AircraftTransmissionSystem.pdb
+C:\Users\tutek\Documents\FDMS\AircraftTransmissionSystem\AircraftTransmissionSystem\obj\Debug\AircraftTransmissionSystem.csproj.AssemblyReference.cache
+C:\Users\tutek\Documents\FDMS\AircraftTransmissionSystem\AircraftTransmissionSystem\obj\Debug\AircraftTransmissionSystem.csproj.SuggestedBindingRedirects.cache
+C:\Users\tutek\Documents\FDMS\AircraftTransmissionSystem\AircraftTransmissionSystem\obj\Debug\AircraftTransmissionSystem.csproj.CoreCompileInputs.cache
+C:\Users\tutek\Documents\FDMS\AircraftTransmissionSystem\AircraftTransmissionSystem\obj\Debug\AircraftTransmissionSystem.exe
+C:\Users\tutek\Documents\FDMS\AircraftTransmissionSystem\AircraftTransmissionSystem\obj\Debug\AircraftTransmissionSystem.pdb

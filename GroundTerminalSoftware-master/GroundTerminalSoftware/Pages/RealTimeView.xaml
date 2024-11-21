@@ -9,7 +9,27 @@
       Title="RealTimeView">
 
     <Grid>
-        <Label Name="FlightDataLable" Content="Telemtry Data:" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Width="90" Margin="-700,-70,0,0"/>
+     <!-- <Label Name="FlightDataLable" Content="Telemtry Data:" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Width="90" Margin="-700,-70,0,0"/>
         <Label Name="FlightData" Content="Waiting for Server..." Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Width="700" Margin="80,-70,0,0"/>
+        -->
+        <DataGrid Name="FlightDataGrid"
+                  AutoGenerateColumns="False"
+                  ItemsSource="{Binding FlightDataEntries}"
+                  IsReadOnly="True"
+                  CanUserAddRows="False"
+                  Margin="10">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Tail#" Binding="{Binding TailNum}" Width="*"/>
+                <DataGridTextColumn Header="Timestamp" Binding="{Binding Timestamp}" Width="*"/>
+                <DataGridTextColumn Header="X" Binding="{Binding X}" Width="*"/>
+                <DataGridTextColumn Header="Y" Binding="{Binding Y}" Width="*"/>
+                <DataGridTextColumn Header="Z" Binding="{Binding Z}" Width="*"/>
+                <DataGridTextColumn Header="Weight" Binding="{Binding Weight}" Width="*"/>
+                <DataGridTextColumn Header="Altitude" Binding="{Binding Altitude}" Width="*"/>
+                <DataGridTextColumn Header="Pitch" Binding="{Binding Pitch}" Width="*"/>
+                <DataGridTextColumn Header="Bank" Binding="{Binding Bank}" Width="*"/>
+                <!-- Add other columns as needed -->
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Page>
