@@ -119,11 +119,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="ShutDown.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Logo.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Save.png" />
+    <Resource Include="ShutDown.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

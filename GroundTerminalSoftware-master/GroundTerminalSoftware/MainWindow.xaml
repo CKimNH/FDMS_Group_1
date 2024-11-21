@@ -78,8 +78,10 @@
 
                 </Button>
 
-                <Button Content="Output Database to .txt" VerticalAlignment="Top" HorizontalAlignment="Left" Height="25" Width="142" BorderThickness="0" Click="Output_Database" Margin="680,15,0,0">
-
+                <Button VerticalAlignment="Top" HorizontalAlignment="Left" Height="35" Width="35" BorderThickness="0" Click="Output_Database" Margin="680,15,0,0">
+                    <Button.Background>
+                        <ImageBrush ImageSource="Save.png"></ImageBrush>
+                    </Button.Background>
                 </Button>
 
 
