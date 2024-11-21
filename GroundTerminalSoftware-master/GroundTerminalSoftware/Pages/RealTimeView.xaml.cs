@@ -34,6 +34,7 @@ namespace GroundTerminalSoftware.Pages
         IPEndPoint localEndPoint;
         public Socket handler;
         private RealTimeViewModel viewModel;
+        private const int rowCount = 20;
 
         public RealTimeView()
         {
@@ -44,11 +45,11 @@ namespace GroundTerminalSoftware.Pages
 
             if (!viewModel.IsActive)
             {
-                InitializeConnectionAndTasks();
+                Initialize_Connection_And_Tasks();
             }
         }
 
-        private void InitializeConnectionAndTasks()
+        private void Initialize_Connection_And_Tasks()
         {
             connection = new SqlConnection("Data Source=CNHKIM\\SQLEXPRESS;Initial Catalog=FlightData;Integrated Security=True");
             connection.Open();
@@ -185,8 +186,7 @@ namespace GroundTerminalSoftware.Pages
                         Dispatcher.Invoke(() =>
                         {
                             viewModel.FlightDataEntries.Insert(0, flightDataEntry);
-
-                            if (viewModel.FlightDataEntries.Count > 5 )
+                            if (viewModel.FlightDataEntries.Count > rowCount)
                             {
                                 viewModel.FlightDataEntries.RemoveAt(viewModel.FlightDataEntries.Count - 1);
                             }
