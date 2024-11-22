@@ -115,7 +115,6 @@ namespace GroundTerminalSoftware
             {
                 RealTimeView real_time_view = new RealTimeView();
 
-                //real_time_view.Erase_Database();
 
                 //Kill threads
                 shutdown_flag = true;

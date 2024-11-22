@@ -71,14 +71,11 @@ namespace GroundTerminalSoftware.Pages
                 //assure thread stops
                 Thread.Sleep(10);
                 MainWindow.instance.pause_real_time_output = false;
-                //Task.Run(() => Update_Label_Content());
             }
         }
 
         public void Start_listener()
         {
-            //Erase_Database();
-
             host = Dns.GetHostEntry("localhost");
             iPAddress = host.AddressList[0];
             localEndPoint = new IPEndPoint(iPAddress, 11000);
@@ -228,25 +225,5 @@ namespace GroundTerminalSoftware.Pages
             }
         }
 
-        //public void Update_Label_Content()
-        //{
-        //    while (!MainWindow.instance.pause_real_time_output)
-        //    {
-        //        Dispatcher.Invoke(() =>
-        //        {
-        //            FlightData.Content = MainWindow.instance.real_time_output;
-        //        });
-        //        Thread.Sleep(10);
-        //    }
-        //}
-
-        //public void Erase_Database()
-        //{
-        //    SqlCommand deleteGForceTable = new SqlCommand("DELETE FROM GForceParameters", connection);
-        //    deleteGForceTable.ExecuteNonQuery();
-
-        //    SqlCommand deleteAttitudeTable = new SqlCommand("DELETE FROM AttitudeParameters", connection);
-        //    deleteAttitudeTable.ExecuteNonQuery();
-        //}
     }
 }
