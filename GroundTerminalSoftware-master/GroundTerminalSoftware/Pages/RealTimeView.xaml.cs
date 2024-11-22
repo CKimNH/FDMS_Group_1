@@ -139,19 +139,19 @@ namespace GroundTerminalSoftware.Pages
                         DateTime currentDateTime = DateTime.Now;
                         timeStamp = currentDateTime.ToString("yyyy-MM-dd HH:mm:ss");
 
-                        if (float.TryParse(parsedString[0], out float X))
+                        if (float.TryParse(parsedString[1], out float X))
                         {
                             x = X;
                         }
-                        if (float.TryParse(parsedString[1], out float Y))
+                        if (float.TryParse(parsedString[2], out float Y))
                         {
                             y = Y;
                         }
-                        if (float.TryParse(parsedString[2], out float Z))
+                        if (float.TryParse(parsedString[3], out float Z))
                         {
                             z = Z;
                         }
-                        if (float.TryParse(parsedString[3], out float W))
+                        if (float.TryParse(parsedString[4], out float W))
                         {
                             weight = W;
                         }
