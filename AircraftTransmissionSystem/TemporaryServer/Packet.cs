@@ -12,8 +12,8 @@ namespace AircraftTransmissionSystem
 
     struct Header
     {
-        public string TailNum;
-        public uint SequenceNum;
+        public string TailNumber;
+        public uint SequenceNumber;
     }
 
     struct Body
@@ -38,8 +38,8 @@ namespace AircraftTransmissionSystem
         {
             string[] dataArray = line.Split ('|');
 
-            header.TailNum = dataArray[0];
-            header.SequenceNum = Convert.ToUInt32(dataArray[1]);
+            header.TailNumber = dataArray[0];
+            header.SequenceNumber = Convert.ToUInt32(dataArray[1]);
             body.data = dataArray[2];
             trailer.Checksum = Convert.ToDouble(dataArray[3]);
         }
@@ -58,8 +58,8 @@ namespace AircraftTransmissionSystem
             {
                 using (BinaryWriter bw = new BinaryWriter(m))
                 {
-                    bw.Write(this.header.TailNum);
-                    bw.Write(this.header.SequenceNum);
+                    bw.Write(this.header.TailNumber);
+                    bw.Write(this.header.SequenceNumber);
                     bw.Write(this.body.data);
                     bw.Write(this.trailer.Checksum);
                 }
@@ -74,8 +74,8 @@ namespace AircraftTransmissionSystem
             {
                 using (BinaryReader br = new BinaryReader(ms))
                 {
-                    result.header.TailNum = br.ReadString();
-                    result.header.SequenceNum = br.ReadUInt32();
+                    result.header.TailNumber = br.ReadString();
+                    result.header.SequenceNumber = br.ReadUInt32();
                     result.body.data = br.ReadString();
                     result.trailer.Checksum = br.ReadDouble();
                 }
@@ -86,8 +86,8 @@ namespace AircraftTransmissionSystem
         public static string PacketToString(Packet packet)
         {
             string result = "";
-            result += packet.header.TailNum + " ";
-            result += packet.header.SequenceNum.ToString() + " ";
+            result += packet.header.TailNumber + " ";
+            result += packet.header.SequenceNumber.ToString() + " ";
             result += packet.body.data + " ";
             result += Convert.ToString(packet.trailer.Checksum) + ";";
             return result;

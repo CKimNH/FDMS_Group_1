@@ -19,57 +19,64 @@ namespace AircraftTransmissionSystem
 
         public static int StartServer()
         {
-            // Get Host IP Address that is used to establish a connection
-            // In this case, we get one IP address of localhost that is IP : 127.0.0.1
-            // If a host has multiple addresses, you will get a list of addresses
-
+            // Get the host's IP address to set up the server.
+            // Here, we're using localhost, which is 127.0.0.1.
+            // If the host has multiple IP addresses, you'll get a list of them.
             IPHostEntry host = Dns.GetHostEntry("localhost");
-            IPAddress iPAddress = host.AddressList[0];
-            IPEndPoint localEndPoint = new IPEndPoint(iPAddress, 11000);
+            IPAddress ipAddress = host.AddressList[0];
+            IPEndPoint localEP = new IPEndPoint(ipAddress, 11000);
 
             try
             {
-                // Create a Socket that will use Tcp protocol
-                Socket listener = new Socket(iPAddress.AddressFamily,
-                    SocketType.Stream, ProtocolType.Tcp);
-                //A Socket must be associated with an endpoint using the Bind method
-                listener.Bind(localEndPoint);
-                // Specify how many requests a Socket can listen before it gives Server busy response.
-                // We will use 1 request at a time. No more needed.
+                // Create a TCP socket for the server.
+                Socket listener = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+
+                // Bind the socket to the endpoint (IP and port).
+                listener.Bind(localEP);
+
+                // Set the socket to listen for incoming connections.
+                // Here, the server is set to handle one connection at a time.
                 listener.Listen(1);
 
                 Console.WriteLine("Waiting for a connection...");
                 Socket handler = listener.Accept();
 
-                // Incoming ata from the client.
+                // Prepare to receive data from the client.
                 string data = null;
                 byte[] bytes = null;
 
                 while (true)
                 {
                     bytes = new byte[1024];
-                    int bytesRec = handler.Receive(bytes);
-                    data += Encoding.ASCII.GetString(bytes, 0, bytesRec);
+                    int bytesReceived = handler.Receive(bytes);
+
+                    // Append the received data to the existing string.
+                    data += Encoding.ASCII.GetString(bytes, 0, bytesReceived);
+
+                    // Check for the end-of-message marker (<EOF>).
                     if (data.IndexOf("<EOF>") > -1)
                     {
                         break;
                     }
+
+                    // Deserialize and display the received packet.
                     Console.WriteLine(Packet.PacketToString(Packet.Deserialize(bytes)));
                 }
 
-
+                // Close the connection.
                 handler.Shutdown(SocketShutdown.Both);
                 handler.Close();
             }
             catch (Exception ex)
             {
+                // Handle any errors that occur.
                 Console.WriteLine(ex.ToString());
                 return 1;
             }
-            Console.WriteLine("Reading Process is done.");
+
+            Console.WriteLine("Reading process is done.");
             Console.ReadKey();
             return 0;
         }
-
     }
 }
