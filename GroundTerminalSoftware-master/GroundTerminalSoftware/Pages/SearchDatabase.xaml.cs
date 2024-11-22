@@ -45,11 +45,16 @@ namespace GroundTerminalSoftware.Pages
             string pitch = "";
             string bank = "";
 
-            SqlConnection connection = new SqlConnection("Data Source=CNHKIM\\SQLEXPRESS;Initial Catalog=FlightData;Integrated Security=True");
+            string connString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=FlightData;Integrated Security=True;Connect Timeout=30;Encrypt=False";
+
+            SqlConnection connection = new SqlConnection(connString);
             connection.Open();
 
-            SqlCommand readGForceParameters = new SqlCommand("select * from GForceParameters where TailNumber=@TailNumber", connection);
-            SqlCommand readAttitudeParameters = new SqlCommand("select * from AttitudeParameters where TailNumber=@TailNumber", connection);
+            //SqlCommand readGForceParameters = new SqlCommand("SELECT [tailNumber],[timestamp],[gAccelX],[gAccelY],[gAccelZ],[gWeight] FROM [FDMS_Database].[dbo].[airplane_info] WHERE [tailNumber]='@TailNumber'", connection);
+            //SqlCommand readAttitudeParameters = new SqlCommand("SELECT [tailNumber],[apAltitude],[apPitch],[apBank] FROM [FDMS_Database].[dbo].[airplane_info] WHERE [tailNumber]='@TailNumber'", connection);
+
+            SqlCommand readGForceParameters = new SqlCommand("select * from [dbo].[GForceParameters] where [TailNumber]='@TailNumber'", connection);
+            SqlCommand readAttitudeParameters = new SqlCommand("select * from [dbo].[AttitudeParameters] where [TailNumber]='@TailNumber'", connection);
 
 
             readGForceParameters.Parameters.AddWithValue("@TailNumber", tailNum);
