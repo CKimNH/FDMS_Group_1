@@ -69,13 +69,13 @@ namespace GroundTerminalSoftware
                 shutdown_flag = true;
                 Thread.Sleep(100);
 
-                string connectionString = "Data Source=CNHKIM\\SQLEXPRESS;Initial Catalog=FlightData;Integrated Security=True";
+                string connString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=FlightData;Integrated Security=True;Connect Timeout=30;Encrypt=False";
                 string g_force_table = "GForceParameters";
 
-                SqlConnection connection = new SqlConnection(connectionString);
+                SqlConnection connection = new SqlConnection(connString);
                 connection.Open();
 
-                string g_query = $"SELECT * FROM {g_force_table}";
+                string g_query = "SELECT * FROM [FDMS_Database].[dbo].[airplane_info] WHERE [tailNumber]='@TailNumber'";
 
                 SqlCommand g_command = new SqlCommand(g_query, connection);
 
@@ -115,7 +115,7 @@ namespace GroundTerminalSoftware
             {
                 RealTimeView real_time_view = new RealTimeView();
 
-                real_time_view.Erase_Database();
+                //real_time_view.Erase_Database();
 
                 //Kill threads
                 shutdown_flag = true;

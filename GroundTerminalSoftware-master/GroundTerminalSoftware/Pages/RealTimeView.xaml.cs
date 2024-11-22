@@ -51,7 +51,9 @@ namespace GroundTerminalSoftware.Pages
 
         private void Initialize_Connection_And_Tasks()
         {
-            connection = new SqlConnection("Data Source=CNHKIM\\SQLEXPRESS;Initial Catalog=FlightData;Integrated Security=True");
+            string connString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=FlightData;Integrated Security=True;Connect Timeout=30;Encrypt=False";
+
+            connection = new SqlConnection(connString);
             connection.Open();
 
             if (!MainWindow.instance.run_once)
@@ -75,7 +77,7 @@ namespace GroundTerminalSoftware.Pages
 
         public void Start_listener()
         {
-            Erase_Database();
+            //Erase_Database();
 
             host = Dns.GetHostEntry("localhost");
             iPAddress = host.AddressList[0];
@@ -137,19 +139,19 @@ namespace GroundTerminalSoftware.Pages
                         DateTime currentDateTime = DateTime.Now;
                         timeStamp = currentDateTime.ToString("yyyy-MM-dd HH:mm:ss");
 
-                        if (float.TryParse(parsedString[1], out float X))
+                        if (float.TryParse(parsedString[0], out float X))
                         {
                             x = X;
                         }
-                        if (float.TryParse(parsedString[2], out float Y))
+                        if (float.TryParse(parsedString[1], out float Y))
                         {
                             y = Y;
                         }
-                        if (float.TryParse(parsedString[3], out float Z))
+                        if (float.TryParse(parsedString[2], out float Z))
                         {
                             z = Z;
                         }
-                        if (float.TryParse(parsedString[4], out float W))
+                        if (float.TryParse(parsedString[3], out float W))
                         {
                             weight = W;
                         }
@@ -193,10 +195,10 @@ namespace GroundTerminalSoftware.Pages
                         });
 
                         // put information into database
-                        SqlCommand updateGForceParameters = new SqlCommand("insert into GForceParameters (TailNumber,Timestamp,X,Y,Z,Weight) values" +
+                        SqlCommand updateGForceParameters = new SqlCommand("insert into [dbo].[GForceParameters] (TailNumber,Timestamp,X,Y,Z,Weight) values" +
                             "(@TailNumber,@Timestamp,@X,@Y,@Z,@Weight)", connection);
 
-                        SqlCommand updateAttitudeParameters = new SqlCommand("insert into AttitudeParameters (TailNumber,Altitude,Pitch,Bank) values" +
+                        SqlCommand updateAttitudeParameters = new SqlCommand("insert into [dbo].[AttitudeParameters] (TailNumber,Altitude,Pitch,Bank) values" +
                             "(@TailNumber,@Altitude,@Pitch,@Bank)", connection);
 
 
@@ -226,25 +228,25 @@ namespace GroundTerminalSoftware.Pages
             }
         }
 
-/*        public void Update_Label_Content()
-        {
-            while (!MainWindow.instance.pause_real_time_output) 
-            {
-                Dispatcher.Invoke(() =>
-                {
-                    FlightData.Content = MainWindow.instance.real_time_output;
-                });
-                Thread.Sleep(10);
-            }
-        }
-*/
-        public void Erase_Database()
-        {
-            SqlCommand deleteGForceTable = new SqlCommand("DELETE FROM GForceParameters", connection);
-            deleteGForceTable.ExecuteNonQuery();
+        //public void Update_Label_Content()
+        //{
+        //    while (!MainWindow.instance.pause_real_time_output)
+        //    {
+        //        Dispatcher.Invoke(() =>
+        //        {
+        //            FlightData.Content = MainWindow.instance.real_time_output;
+        //        });
+        //        Thread.Sleep(10);
+        //    }
+        //}
 
-            SqlCommand deleteAttitudeTable = new SqlCommand("DELETE FROM AttitudeParameters", connection);
-            deleteAttitudeTable.ExecuteNonQuery();
-        }
+        //public void Erase_Database()
+        //{
+        //    SqlCommand deleteGForceTable = new SqlCommand("DELETE FROM GForceParameters", connection);
+        //    deleteGForceTable.ExecuteNonQuery();
+
+        //    SqlCommand deleteAttitudeTable = new SqlCommand("DELETE FROM AttitudeParameters", connection);
+        //    deleteAttitudeTable.ExecuteNonQuery();
+        //}
     }
 }
