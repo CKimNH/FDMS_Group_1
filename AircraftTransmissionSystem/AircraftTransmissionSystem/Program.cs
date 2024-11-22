@@ -1,6 +1,4 @@
-﻿
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -26,28 +24,26 @@ namespace AircraftTransmissionSystem
         public static void StartClient()
         {
             byte[] bytes = new byte[1024];
-            // Connect to a Remote server
-            // Get Host IP Address that is used to establish a connection
-            // In this case, we get one IP address of localhost that is IP : 127.0.0.1
-            // If a host has multiple addresses, you will get a list of addresses
+            // Set up a connection to the server.
+            // We're using localhost here, which has the IP address 127.0.0.1.
+            // If the server has multiple IPs, this will just grab one of them.
             IPHostEntry host = Dns.GetHostEntry("localhost");
             IPAddress ipAddress = host.AddressList[0];
             IPEndPoint remoteEP = new IPEndPoint(ipAddress, 11000);
             int maxAttempts = 100;
             int attempts = 0;
 
-            // Create a TCP/IP  socket.
-            Socket sender = new Socket(ipAddress.AddressFamily,
-                SocketType.Stream, ProtocolType.Tcp);
+            // Create a TCP socket to communicate with the server.
+            Socket sender = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
-            // Connect the socket to the remote endpoint. Catch any errors.
+            // Try to connect to the server. Keep retrying until the limit is reached or it succeeds.
             while (attempts < maxAttempts)
             {
                 try
                 {
-                    // Connect to Remote EndPoint
+                    // Attempt to connect.
                     sender.Connect(remoteEP);
-                    // break if connection was succeeded.
+                    // If successful, break out of the loop.
                     attempts = 0;
                     break;
                 }
@@ -55,62 +51,65 @@ namespace AircraftTransmissionSystem
                 {
                     if (attempts >= maxAttempts)
                     {
-                        Console.WriteLine("SocketException : {0}", se.ToString());
+                        Console.WriteLine("SocketException: {0}", se.ToString());
                         return;
                     }
                     attempts++;
                 }
                 catch (ArgumentNullException ane)
                 {
-                    Console.WriteLine("ArgumentNullException : {0}", ane.ToString());
+                    Console.WriteLine("ArgumentNullException: {0}", ane.ToString());
                     return;
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("Unexpected exception : {0}", e.ToString());
+                    Console.WriteLine("Unexpected exception: {0}", e.ToString());
                     return;
                 }
             }
 
-//            Console.WriteLine("Socket connected to {0}",
-//                sender.RemoteEndPoint.ToString());
-
+            // Read all the log files in the "logs" directory.
             string[] fileNames = Directory.GetFiles(@".\logs");
             string lineRead = "";
-            string dataForPacket = "", separator = "|";
-            uint sequenceNum = 0;
-            double checksumNum = 0.0;
-            Regex rg = new Regex(format);
+            string packetData = "", separator = "|";
+            uint sequenceNumber = 0;
+            double checksumNumber = 0.0;
+            Regex regex = new Regex(format);
+
             foreach (string fileName in fileNames)
             {
-                using (StreamReader fr = new StreamReader(fileName))
+                using (StreamReader reader = new StreamReader(fileName))
                 {
-                    sequenceNum = 0;
-                    while ((lineRead = fr.ReadLine()) != null)
+                    sequenceNumber = 0;
+                    while ((lineRead = reader.ReadLine()) != null)
                     {
-                        if (rg.IsMatch(lineRead))
+                        if (regex.IsMatch(lineRead))
                         {
+                            // If the line matches the expected format, process it.
                             string[] data = lineRead.Split(',');
-                            checksumNum = checksum(Convert.ToDouble(data[5]), Convert.ToDouble(data[6]), Convert.ToDouble(data[7]));
-                            dataForPacket = "";
-                            dataForPacket += Path.GetFileNameWithoutExtension(fileName);
-                            dataForPacket += separator;
-                            dataForPacket += sequenceNum.ToString();
-                            dataForPacket += separator;
-                            dataForPacket += lineRead;
-                            dataForPacket += separator;
-                            dataForPacket += checksumNum.ToString();
+                            checksumNumber = checksum(Convert.ToDouble(data[5]), Convert.ToDouble(data[6]), Convert.ToDouble(data[7]));
+                            packetData = "";
+                            packetData += Path.GetFileNameWithoutExtension(fileName);
+                            packetData += separator;
+                            packetData += sequenceNumber.ToString();
+                            packetData += separator;
+                            packetData += lineRead;
+                            packetData += separator;
+                            packetData += checksumNumber.ToString();
 
-                            Packet sendingPacket = new Packet(dataForPacket);
+                            Packet sendPacket = new Packet(packetData);
 
-                            int byteSent = sender.Send(sendingPacket.Serialize());
+                            // Send the packet to the server.
+                            int byteSent = sender.Send(sendPacket.Serialize());
 
-                            sequenceNum++;
+                            sequenceNumber++;
                         }
                         else
                         {
+                            // Stop processing if the line doesn't match the expected format.
                             break;
                         }
+                        // Pause for a second before reading the next line.
                         Thread.Sleep(1000);
                     }
                 }
@@ -118,22 +117,15 @@ namespace AircraftTransmissionSystem
 
             bytes = Encoding.ASCII.GetBytes("This is a test<EOF>");
 
-            // Send the data through the socket.
+            // Send a test message to the server.
             int bytesSent = sender.Send(bytes);
 
-            /*
-                                // Receive the response from the remote device.
-                                int bytesRec = sender.Receive(bytes);
-                                Console.WriteLine("Echoed test = {0}",
-                                    Encoding.ASCII.GetString(bytes, 0, bytesRec));
-            */
-            // Release the socket.
+            // Close the connection.
             sender.Shutdown(SocketShutdown.Both);
             sender.Close();
-
-            
         }
 
+        // Calculate the checksum as the average of altitude, pitch, and bank.
         public static double checksum(double alt, double pitch, double bank)
         {
             return (alt + pitch + bank) / 3;
