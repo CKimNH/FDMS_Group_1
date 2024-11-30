@@ -1,18 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data.SqlClient;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace GroundTerminalSoftware.Pages
 {
@@ -50,8 +38,23 @@ namespace GroundTerminalSoftware.Pages
             SqlConnection connection = new SqlConnection(connString);
             connection.Open();
 
-            SqlCommand readGForceParameters = new SqlCommand("select * from [dbo].[GForceParameters] where [TailNumber]='@TailNumber'", connection);
-            SqlCommand readAttitudeParameters = new SqlCommand("select * from [dbo].[AttitudeParameters] where [TailNumber]='@TailNumber'", connection);
+            SqlCommand readGForceParameters = new SqlCommand(
+                "SELECT [TailNumber]" +
+                ",[TimeStamp]" +
+                ",[X]" +
+                ",[Y]" +
+                ",[Z]" +
+                ",[Weight] " +
+                "FROM [dbo].[GForceParameters] " +
+                "WHERE [TailNumber] = @TailNumber", connection);
+
+            SqlCommand readAttitudeParameters = new SqlCommand(
+                "SELECT [TailNumber]" +
+                ",[Altitude]" +
+                ",[Pitch]" +
+                ",[Bank] " +
+                "FROM [dbo].[AttitudeParameters] " +
+                "WHERE [TailNumber] = @TailNumber", connection);
 
 
             readGForceParameters.Parameters.AddWithValue("@TailNumber", tailNum);

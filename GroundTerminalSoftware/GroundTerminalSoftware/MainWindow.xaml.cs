@@ -1,26 +1,10 @@
 ﻿using GroundTerminalSoftware.Pages;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Net;
-using System.Net.Sockets;
-using System.Threading;
+using System.ComponentModel;
 using System.Data.SqlClient;
 using System.IO;
-using System.ComponentModel;
-using System.Runtime.Remoting.Messaging;
+using System.Threading;
+using System.Windows;
+using System.Windows.Input;
 
 namespace GroundTerminalSoftware
 {
@@ -35,7 +19,6 @@ namespace GroundTerminalSoftware
         public bool shutdown_flag = false;
         public bool pause_real_time_output = false;
         public string real_time_output = "Start the Aircraft Transmission System...";
-        static readonly BackgroundWorker output = new BackgroundWorker();
 
         public MainWindow()
         {
@@ -70,12 +53,25 @@ namespace GroundTerminalSoftware
                 Thread.Sleep(100);
 
                 string connString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=FlightData;Integrated Security=True;Connect Timeout=30;Encrypt=False";
-                string g_force_table = "GForceParameters";
+                //string g_force_table = "GForceParameters";
 
                 SqlConnection connection = new SqlConnection(connString);
                 connection.Open();
 
-                string g_query = "SELECT * FROM [FDMS_Database].[dbo].[airplane_info] WHERE [tailNumber]='@TailNumber'";
+                string g_query = "SELECT " +
+                    "GP.[TailNumber]" +
+                    ",GP.[TimeStamp]" +
+                    ",GP.[X]" +
+                    ",GP.[Y]" +
+                    ",GP.[Z]" +
+                    ",GP.[Weight]" +
+                    ",AP.[Altitude]" +
+                    ",AP.[Pitch]" +
+                    ",AP.[Bank] " +
+                    "FROM [dbo].[AttitudeParameters] AP " +
+                    "INNER JOIN  " +
+                    "[dbo].[GForceParameters] GP " +
+                    "ON AP.TailNumber = GP.TailNumber";
 
                 SqlCommand g_command = new SqlCommand(g_query, connection);
 

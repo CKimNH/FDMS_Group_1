@@ -1,25 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using GroundTerminalSoftware.Models;
+using GroundTerminalSoftware.ViewModels;
+using System;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Threading;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Net;
 using System.Net.Sockets;
-using System.Windows.Media.Media3D;
-using System.Reflection.Emit;
-using GroundTerminalSoftware.Models;
-using GroundTerminalSoftware.ViewModels;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace GroundTerminalSoftware.Pages
 {
@@ -192,10 +180,16 @@ namespace GroundTerminalSoftware.Pages
                         });
 
                         // put information into database
-                        SqlCommand updateGForceParameters = new SqlCommand("insert into [dbo].[GForceParameters] (TailNumber,Timestamp,X,Y,Z,Weight) values" +
+                        SqlCommand updateGForceParameters = new SqlCommand(
+                            "INSERT INTO [dbo].[GForceParameters] " +
+                            "(TailNumber,Timestamp,X,Y,Z,Weight) " +
+                            "VALUES " +
                             "(@TailNumber,@Timestamp,@X,@Y,@Z,@Weight)", connection);
 
-                        SqlCommand updateAttitudeParameters = new SqlCommand("insert into [dbo].[AttitudeParameters] (TailNumber,Altitude,Pitch,Bank) values" +
+                        SqlCommand updateAttitudeParameters = new SqlCommand(
+                            "INSERT INTO [dbo].[AttitudeParameters] " +
+                            "(TailNumber,Altitude,Pitch,Bank) " +
+                            "VALUES " +
                             "(@TailNumber,@Altitude,@Pitch,@Bank)", connection);
 
 

@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace GroundTerminalSoftware
@@ -32,16 +26,16 @@ namespace GroundTerminalSoftware
         public Body body;
         public Trailer trailer;
 
-        public Packet (string line)
+        public Packet(string line)
         {
-            string[] dataArray = line.Split ('|');
+            string[] dataArray = line.Split('|');
 
             header.TailNum = dataArray[0];
             header.SequenceNum = Convert.ToUInt32(dataArray[1]);
             body.data = dataArray[2];
             trailer.Checksum = Convert.ToDouble(dataArray[3]);
         }
-        
+
 
         public Packet()
         {
@@ -52,7 +46,7 @@ namespace GroundTerminalSoftware
 
         public byte[] Serialize()
         {
-            using (MemoryStream m = new MemoryStream ())
+            using (MemoryStream m = new MemoryStream())
             {
                 using (BinaryWriter bw = new BinaryWriter(m))
                 {
@@ -61,7 +55,7 @@ namespace GroundTerminalSoftware
                     bw.Write(this.body.data);
                     bw.Write(this.trailer.Checksum);
                 }
-                return m.ToArray ();
+                return m.ToArray();
             }
         }
 

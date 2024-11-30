@@ -1,7 +1,6 @@
-﻿using System;
+﻿using GroundTerminalSoftware.Models;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using GroundTerminalSoftware.Models;
 
 namespace GroundTerminalSoftware.ViewModels
 {
@@ -33,7 +32,7 @@ namespace GroundTerminalSoftware.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        public void StartBackgroundTasks ()
+        public void StartBackgroundTasks()
         {
             if (!IsActive) { IsActive = true; }
             else { return; }
