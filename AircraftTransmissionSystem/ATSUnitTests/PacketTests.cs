@@ -136,5 +136,28 @@ namespace ATSUnitTests
             // Assert
             Assert.IsFalse(isMatch);
         }
+
+        [TestMethod]
+        public void Packet_Should_Handle_Very_Large_Packets()
+        {
+            // Arrange
+            string largeData = new string('B', 50000); // 50,000-character string
+            Packet packet = new Packet
+            {
+                header = new Header { TailNumber = "AC999", SequenceNumber = 50000 },
+                body = new Body { data = largeData },
+                trailer = new Trailer { Checksum = 54321.12345 }
+            };
+
+            // Act
+            byte[] serializedData = packet.Serialize();
+            Packet deserializedPacket = Packet.Deserialize(serializedData);
+
+            // Assert
+            Assert.AreEqual(packet.header.TailNumber, deserializedPacket.header.TailNumber, "TailNumber should match.");
+            Assert.AreEqual(packet.body.data, deserializedPacket.body.data, "Body data should match.");
+            Assert.AreEqual(packet.trailer.Checksum, deserializedPacket.trailer.Checksum, 0.00001, "Checksum should match.");
+        }
+
     }
 }
