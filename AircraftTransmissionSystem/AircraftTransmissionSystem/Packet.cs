@@ -63,14 +63,14 @@ namespace AircraftTransmissionSystem
         public static Packet Deserialize(Byte[] data)
         {
             Packet result = new Packet();
-            using (MemoryStream ms = new MemoryStream(data)) // Initialize MemoryStream with data
+            using (MemoryStream ms = new MemoryStream(data))
             {
                 using (BinaryReader br = new BinaryReader(ms))
                 {
                     result.header.TailNumber = br.ReadString();
                     result.header.SequenceNumber = br.ReadUInt32();
                     result.body.data = br.ReadString();
-                    result.trailer.Checksum = br.ReadInt32();
+                    result.trailer.Checksum = br.ReadDouble(); // Fix here
                 }
             }
             return result;
